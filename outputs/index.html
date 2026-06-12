@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Estoy ansioso · Herramientas para calmar la ansiedad</title>
-  <meta name="description" content="22 ejercicios basados en evidencia para calmar la ansiedad. Gratis, sin login, funciona ahora."/>
+  <title>Estoy ansioso · Herramientas para bajar la ansiedad</title>
+  <meta name="description" content="22 ejercicios para bajar la ansiedad. Gratis, sin registro, funciona ahora mismo."/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
@@ -20,34 +20,47 @@
 
   <!-- Hero -->
   <section id="hero" class="hero">
+    <svg class="hero-lines" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+      <path d="M220,10 Q310,120 390,150" stroke="#2C3E35" stroke-width="1" fill="none" opacity=".07"/>
+      <path d="M290,5 Q355,75 395,95" stroke="#2C3E35" stroke-width="0.8" fill="none" opacity=".05"/>
+      <path d="M170,50 Q260,170 350,210" stroke="#2C3E35" stroke-width="0.5" fill="none" opacity=".05"/>
+      <path d="M340,20 Q380,60 395,130" stroke="#2C3E35" stroke-width="0.6" fill="none" opacity=".04"/>
+    </svg>
+
     <div class="hero-inner">
-      <p class="hero-eyebrow">Herramienta gratuita · Sin login</p>
-      <h1 class="hero-headline">Si estás ansioso,<br>hay algo que podés hacer ahora.</h1>
-      <p class="hero-sub">22 ejercicios basados en evidencia. Elegís lo que necesitás según cómo te sentís en este momento.</p>
+      <p class="hero-eyebrow">Gratis · Sin registro · Sin historial</p>
+      <h1 class="hero-headline">Estás ansioso.<br>Acá hay cosas que funcionan.</h1>
+      <p class="hero-sub">Ejercicios de respiración, sonidos y técnicas de cuerpo y mente para bajar la ansiedad. Las veces que necesites.</p>
 
       <div class="hero-triage" role="group" aria-label="¿Qué tan ansioso/a estás?">
         <p class="hero-triage-label">¿Cómo estás ahora?</p>
         <button class="triage-btn" data-urgency="alta">
           <span class="triage-emoji">🔴</span>
-          Muy ansioso/a, no puedo pensar
+          Estoy muy ansioso/a, no puedo pensar
         </button>
         <button class="triage-btn" data-urgency="media">
           <span class="triage-emoji">🟡</span>
-          Bastante ansioso/a
+          Estoy bastante ansioso/a
         </button>
         <button class="triage-btn" data-urgency="leve">
           <span class="triage-emoji">🟢</span>
-          Un poco ansioso/a
+          Estoy un poco ansioso/a, quiero relajarme
         </button>
       </div>
     </div>
   </section>
 
+  <!-- Wave: cream → sage -->
+  <div class="wave-sep" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 C240,55 480,5 720,30 C960,55 1200,5 1440,35 L1440,60 L0,60 Z" fill="#EEF4EB"/>
+    </svg>
+  </div>
+
   <!-- Selector inteligente -->
   <section id="selector" class="selector">
     <div class="selector-inner">
 
-      <!-- Filtros -->
       <div class="filter-group">
         <span class="filter-label">Cómo te sentís</span>
         <div class="filter-chips" role="group" aria-label="Nivel de urgencia">
@@ -62,7 +75,7 @@
         <div class="filter-chips" role="group" aria-label="Área de acción">
           <button class="chip" data-dim="target" data-val="body">🫀 En el cuerpo</button>
           <button class="chip" data-dim="target" data-val="mind">🧠 En la cabeza</button>
-          <button class="chip" data-dim="target" data-val="social">👥 En una situación social</button>
+          <button class="chip" data-dim="target" data-val="social">👥 En lo social</button>
         </div>
       </div>
 
@@ -75,19 +88,33 @@
         </div>
       </div>
 
-      <!-- Header de resultados (solo visible con filtros activos) -->
       <div id="results-header" class="results-header" hidden>
         <span id="results-count"></span>
         <button id="btn-clear-filters" class="btn-clear">Ver todos</button>
       </div>
 
-      <!-- Grid de cards (generado por selector.js) -->
       <div id="modules-grid" class="modules-grid" role="list" aria-label="Ejercicios"></div>
 
       <div class="show-all-wrapper" hidden>
-        <button id="btn-show-all" class="btn-show-all">Mostrar todos los ejercicios (22)</button>
+        <button id="btn-show-all" class="btn-show-all">Todos los ejercicios (22)</button>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Wave: sage → cream -->
+  <div class="wave-sep" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,35 C240,5 480,55 720,30 C960,5 1200,55 1440,20 L1440,60 L0,60 Z" fill="#FAF8F2"/>
+    </svg>
+  </div>
+
+  <!-- Trust phrases -->
+  <section class="trust-section" aria-label="Sobre este sitio">
+    <div class="trust-inner">
+      <p class="trust-phrase">"Todo esto es gratis. Sin registrarte, sin darte tu mail, sin pagar nada. Siempre."</p>
+      <p class="trust-phrase">"Lo construí porque yo también la pasé mal. Si a vos te ayuda, cumplió su propósito."</p>
+      <p class="trust-phrase">"No importa si ya probaste esto antes y no funcionó. No importa cuántas veces. Probá de nuevo."</p>
     </div>
   </section>
 
@@ -95,7 +122,8 @@
   <footer class="footer">
     <div class="footer-inner">
       <p class="footer-disclaimer">
-        Esta herramienta es de auto-ayuda y no reemplaza tratamiento profesional. Si la ansiedad interfiere con tu vida diaria, consultá un especialista en salud mental.
+        Este sitio no reemplaza la atención de un profesional de salud mental. Si la ansiedad interfiere con tu vida cotidiana o sentís que no podés manejarlo solo, hablá con alguien.<br><br>
+        <strong>Centro de Asistencia al Suicida · 135 · gratis · 24 horas</strong>
       </p>
       <p class="footer-credit">Hecho con intención · Código abierto</p>
     </div>

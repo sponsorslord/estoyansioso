@@ -6,33 +6,32 @@ const Selector = (() => {
 
   let activeFilters = { urgency: null, target: null, time: null };
   let expandedCardId = null;
-  let gridEl, btnShowAll, showAllWrapper, resultsHeader, resultsCountEl, btnClear;
-  let showingAll = true;
+  let gridEl, resultsHeader, resultsCountEl, btnClear, showAllWrapper;
 
-  /* ── Wiring: which module ID → interactive handler ──────── */
+  /* ── Wiring: module ID → interactive handler ─────────────── */
   const handlers = {
     'box-breathing': {
-      getHTML: getBreathingHTML,
+      getHTML:   getBreathingHTML,
       onExpand:  () => BreathingModule.init(),
       onCollapse:() => BreathingModule.destroy?.(),
     },
     'cold-water': {
-      getHTML: getColdWaterHTML,
+      getHTML:   getColdWaterHTML,
       onExpand:  () => ColdWaterModule.init(),
       onCollapse:() => ColdWaterModule.destroy?.(),
     },
     'butterfly-hug': {
-      getHTML: getButterflyHTML,
+      getHTML:   getButterflyHTML,
       onExpand:  () => ButterflyModule.init(),
       onCollapse:() => ButterflyModule.destroy?.(),
     },
     'grounding-54321': {
-      getHTML: getGroundingHTML,
+      getHTML:   getGroundingHTML,
       onExpand:  () => GroundingModule.init(),
       onCollapse:() => GroundingModule.destroy?.(),
     },
     'music': {
-      getHTML: getMusicHTML,
+      getHTML:   getMusicHTML,
       onExpand:  () => initMusicTabs(),
       onCollapse:() => {},
     },
@@ -40,12 +39,11 @@ const Selector = (() => {
 
   /* ── Init ─────────────────────────────────────────────────── */
   function init() {
-    gridEl         = document.getElementById('modules-grid');
-    btnShowAll     = document.getElementById('btn-show-all');
-    showAllWrapper = btnShowAll?.closest('.show-all-wrapper');
-    resultsHeader  = document.getElementById('results-header');
-    resultsCountEl = document.getElementById('results-count');
-    btnClear       = document.getElementById('btn-clear-filters');
+    gridEl        = document.getElementById('modules-grid');
+    resultsHeader = document.getElementById('results-header');
+    resultsCountEl= document.getElementById('results-count');
+    btnClear      = document.getElementById('btn-clear-filters');
+    showAllWrapper= document.querySelector('.show-all-wrapper');
 
     if (!gridEl) return;
 
@@ -57,10 +55,10 @@ const Selector = (() => {
       btn.addEventListener('click', () => handleTriage(btn.dataset.urgency));
     });
 
-    btnShowAll?.addEventListener('click', () => {
-      showingAll = true;
-      renderCards(getFiltered());
+    document.getElementById('btn-show-all')?.addEventListener('click', () => {
       if (showAllWrapper) showAllWrapper.hidden = true;
+      renderCards(MODULES_DATA);
+      updateUI(MODULES_DATA, false);
     });
 
     btnClear?.addEventListener('click', clearFilters);
@@ -73,37 +71,29 @@ const Selector = (() => {
   function toggleChip(chip) {
     const { dim, val } = chip.dataset;
     const wasSame = activeFilters[dim] === val;
-
     document.querySelectorAll(`.chip[data-dim="${dim}"]`).forEach(c => c.classList.remove('active'));
     activeFilters[dim] = wasSame ? null : val;
     if (!wasSame) chip.classList.add('active');
-
     if (dim === 'urgency') syncTriageButtons();
     render();
   }
 
   function handleTriage(urgency) {
     const wasSame = activeFilters.urgency === urgency;
-
     document.querySelectorAll('.chip[data-dim="urgency"]').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.triage-btn').forEach(b => b.classList.remove('active'));
-
+    activeFilters.urgency = wasSame ? null : urgency;
     if (!wasSame) {
-      activeFilters.urgency = urgency;
       document.querySelector(`.chip[data-dim="urgency"][data-val="${urgency}"]`)?.classList.add('active');
       document.querySelector(`.triage-btn[data-urgency="${urgency}"]`)?.classList.add('active');
-    } else {
-      activeFilters.urgency = null;
     }
-
     document.getElementById('selector')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setTimeout(render, 50);
   }
 
   function clearFilters() {
     activeFilters = { urgency: null, target: null, time: null };
-    document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.triage-btn.active').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.chip.active, .triage-btn.active').forEach(el => el.classList.remove('active'));
     render();
   }
 
@@ -126,16 +116,15 @@ const Selector = (() => {
     return !!(activeFilters.urgency || activeFilters.target || activeFilters.time);
   }
 
-  /* ── Render orchestration ────────────────────────────────── */
+  /* ── Render ───────────────────────────────────────────────── */
   function render() {
-    const filtered  = getFiltered();
+    const filtered   = getFiltered();
     const isFiltered = hasFilter();
 
     if (expandedCardId && !filtered.find(m => m.id === expandedCardId)) {
       collapseCard(true);
     }
 
-    showingAll = isFiltered || true;
     renderCards(filtered);
     updateUI(filtered, isFiltered);
   }
@@ -143,23 +132,27 @@ const Selector = (() => {
   function renderCards(modules) {
     if (!gridEl) return;
 
-    // Destroy any running interactive module before clearing DOM
+    // Destroy running module before clearing DOM
     if (expandedCardId && modules.find(m => m.id === expandedCardId)) {
       handlers[expandedCardId]?.onCollapse?.();
     }
 
     gridEl.innerHTML = '';
 
-    modules.forEach(mod => {
+    modules.forEach((mod, i) => {
       const card = buildCard(mod);
+      card.style.animationDelay = `${i * 40}ms`;
+
       if (mod.id === expandedCardId) {
         card.classList.add('expanded');
+        card.querySelector('.card-header').setAttribute('aria-expanded', 'true');
         const h = handlers[mod.id];
         const contentEl = card.querySelector('.card-content');
-        contentEl.innerHTML = `<div class="card-content-inner">${h ? h.getHTML() : getStaticHTML(mod)}</div>`;
+        contentEl.innerHTML = buildContentHTML(mod, h);
         contentEl.hidden = false;
         if (h) requestAnimationFrame(() => h.onExpand());
       }
+
       gridEl.appendChild(card);
     });
   }
@@ -173,36 +166,41 @@ const Selector = (() => {
     }
   }
 
-  /* ── Card builder ────────────────────────────────────────── */
+  /* ── Card builder ─────────────────────────────────────────── */
+  function getBadge(mod) {
+    if (mod.urgency.includes('alta'))        return { label: 'Urgente',  cls: 'badge-urgent' };
+    if (mod.urgency.includes('media'))       return { label: 'Moderado', cls: 'badge-moderate' };
+    return { label: 'Relajado', cls: 'badge-calm' };
+  }
+
   function buildCard(mod) {
     const card = document.createElement('article');
     card.className = 'module-card';
     card.dataset.moduleId = mod.id;
+    card.setAttribute('role', 'listitem');
 
-    const timeLabel = { '<2': '< 2 min', '2-5': '2–5 min', '10+': '10+ min' }[mod.time] || mod.time;
-    const dots = Array.from({ length: 5 }, (_, i) =>
+    const badge = getBadge(mod);
+    const dots  = Array.from({ length: 5 }, (_, i) =>
       `<span class="effect-dot${i < mod.effect ? ' on' : ''}"></span>`
     ).join('');
 
     card.innerHTML = `
-      <div class="card-header" role="button" tabindex="0" aria-expanded="false">
-        <span class="card-emoji" aria-hidden="true">${mod.emoji}</span>
-        <div class="card-meta">
-          <div class="card-name">${mod.name}</div>
-          <div class="card-short">${mod.nameShort}</div>
-          <div class="card-stats">
-            <span class="card-time">⏱ ${timeLabel}</span>
-            <span class="card-effect" aria-label="Efectividad: ${mod.effect} de 5">${dots}</span>
-          </div>
+      <div class="card-header" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir: ${mod.name}">
+        <div class="card-header-top">
+          <span class="card-emoji" aria-hidden="true">${mod.emoji}</span>
+          <span class="card-badge ${badge.cls}">${badge.label}</span>
         </div>
-        <span class="card-arrow" aria-hidden="true">↓</span>
+        <div class="card-name">${mod.name}</div>
+        <div class="card-footer-row">
+          <span class="card-meta">${mod.timeLabel} · ${badge.label}</span>
+          <span class="card-effect" aria-label="Efectividad: ${mod.effect} de 5">${dots}</span>
+        </div>
       </div>
-      <p class="card-desc">${mod.description}</p>
       <div class="card-content" hidden></div>
     `;
 
     const header = card.querySelector('.card-header');
-    header.addEventListener('click', () => toggleCard(mod.id));
+    header.addEventListener('click',   () => toggleCard(mod.id));
     header.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(mod.id); }
     });
@@ -210,14 +208,16 @@ const Selector = (() => {
     return card;
   }
 
+  function buildContentHTML(mod, handler) {
+    const phraseHTML = mod.openingPhrase
+      ? `<p class="module-phrase">"${mod.openingPhrase}"</p>` : '';
+    const bodyHTML = handler ? handler.getHTML() : getStaticHTML(mod);
+    return `<div class="card-content-inner">${phraseHTML}${bodyHTML}</div>`;
+  }
+
   /* ── Card expand / collapse ──────────────────────────────── */
   function toggleCard(moduleId) {
-    if (expandedCardId === moduleId) {
-      collapseCard();
-    } else {
-      if (expandedCardId) collapseCard(true);
-      expandCard(moduleId);
-    }
+    expandedCardId === moduleId ? collapseCard() : (expandedCardId && collapseCard(true), expandCard(moduleId));
   }
 
   function expandCard(moduleId) {
@@ -231,11 +231,10 @@ const Selector = (() => {
     const h = handlers[moduleId];
     const mod = MODULES_DATA.find(m => m.id === moduleId);
     const contentEl = card.querySelector('.card-content');
-    contentEl.innerHTML = `<div class="card-content-inner">${h ? h.getHTML() : getStaticHTML(mod)}</div>`;
+    contentEl.innerHTML = buildContentHTML(mod, h);
     contentEl.hidden = false;
 
     if (h) requestAnimationFrame(() => h.onExpand());
-
     setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
   }
 
@@ -254,28 +253,34 @@ const Selector = (() => {
   }
 
   /* ════════════════════════════════════════════════════════════
-     HTML templates for interactive modules
+     HTML templates
      ════════════════════════════════════════════════════════════ */
 
   function getBreathingHTML() {
-    const circ = (2 * Math.PI * 88).toFixed(2);
     return `
 <div id="mod-box">
+  <div class="breath-tabs" role="tablist" aria-label="Variante de respiración">
+    <button class="breath-tab active" data-mode="box"  role="tab" aria-selected="true">4-4-4-4</button>
+    <button class="breath-tab"        data-mode="478"  role="tab" aria-selected="false">4-7-8</button>
+    <button class="breath-tab"        data-mode="sigh" role="tab" aria-selected="false">Suspiro</button>
+  </div>
+
   <div id="box-idle">
-    <p class="mod-idle-text">5 ciclos de 4-4-4-4. Activa el sistema parasimpático en 90 segundos.</p>
+    <p class="mod-idle-text" id="box-idle-desc">5 ciclos de 4-4-4-4 · 90 segundos</p>
     <button id="box-start" class="btn-primary">Empezar respiración</button>
   </div>
+
   <div id="box-active" class="hidden">
-    <div id="box-overlay" class="breath-overlay">
-      <svg class="breath-ring-svg" viewBox="0 0 220 220" aria-hidden="true">
-        <circle class="breath-ring-track" cx="110" cy="110" r="88"/>
-        <circle id="box-ring" class="breath-ring-progress" cx="110" cy="110" r="88"
-          stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/>
-      </svg>
-      <div class="breath-inner">
-        <div id="box-label"  class="breath-label">INHALÁ</div>
-        <div id="box-counter" class="breath-counter">4</div>
-        <div id="box-sublabel" class="breath-sublabel">por la nariz</div>
+    <div id="box-overlay-wrap" class="breath-container">
+      <div class="breath-bg-overlay" id="box-overlay"></div>
+      <div class="breath-outer" id="box-ring-outer" style="--breath-dur:4s">
+        <div class="breath-mid">
+          <div class="breath-inner">
+            <div id="box-label"    class="breath-phase-label">INHALÁ</div>
+            <div id="box-counter"  class="breath-counter"     aria-live="polite">4</div>
+            <div id="box-sublabel" class="breath-sublabel">por la nariz</div>
+          </div>
+        </div>
       </div>
     </div>
     <p id="box-instruction" class="breath-instruction"></p>
@@ -285,8 +290,9 @@ const Selector = (() => {
       <button id="box-reset" class="btn-secondary">Reiniciar</button>
     </div>
   </div>
+
   <div id="box-end" class="hidden mod-end">
-    <p>Completaste los 5 ciclos. Bien hecho.</p>
+    <p>Completaste los ciclos. Bien hecho.</p>
     <div class="end-actions">
       <button id="box-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
       <button id="box-done"   class="btn-secondary">Cerrar</button>
@@ -299,7 +305,7 @@ const Selector = (() => {
     return `
 <div id="mod-water">
   <div id="water-idle">
-    <p class="mod-idle-text">Andá a un grifo. Agua fría en cara y frente durante 30 segundos.</p>
+    <p class="mod-idle-text">Andá al grifo. Agua fría en cara y frente durante 30 segundos.</p>
     <button id="water-start" class="btn-primary">Iniciar cuenta regresiva</button>
   </div>
   <div id="water-active" class="hidden">
@@ -311,7 +317,7 @@ const Selector = (() => {
     </div>
   </div>
   <div id="water-end" class="hidden mod-end">
-    <p>✓ Listo. El reflejo de buceo bajó tu ritmo cardíaco.</p>
+    <p>Listo. El reflejo de buceo bajó tu ritmo cardíaco.</p>
     <div class="end-actions">
       <button id="water-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
       <button id="water-done"   class="btn-secondary">Cerrar</button>
@@ -325,19 +331,19 @@ const Selector = (() => {
 <div id="mod-butterfly">
   <div class="butterfly-illustration">
     <svg viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle cx="60" cy="28" r="18" fill="#1E1E34" stroke="#A855F7" stroke-width="1.5"/>
-      <circle cx="54" cy="25" r="2.5" fill="#A855F7" opacity=".8"/>
-      <circle cx="66" cy="25" r="2.5" fill="#A855F7" opacity=".8"/>
-      <path d="M54 33 Q60 37 66 33" stroke="#A855F7" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-      <rect x="44" y="48" width="32" height="52" rx="16" fill="#1E1E34" stroke="#7C3AED" stroke-width="1.5"/>
-      <path d="M44 62 Q26 72 37 88 Q44 96 60 90" stroke="#A855F7" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <path d="M76 62 Q94 72 83 88 Q76 96 60 90" stroke="#7C3AED" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <ellipse cx="54" cy="88" rx="11" ry="7" fill="#A855F7" opacity=".35"/>
-      <ellipse cx="66" cy="83" rx="11" ry="7" fill="#7C3AED" opacity=".35"/>
-      <path d="M50 100 L47 132" stroke="#7C3AED" stroke-width="4" stroke-linecap="round"/>
-      <path d="M70 100 L73 132" stroke="#7C3AED" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="60" cy="28" r="18" fill="#EEF4EB" stroke="#7A9E7E" stroke-width="1.5"/>
+      <circle cx="54" cy="25" r="2.5" fill="#7A9E7E" opacity=".8"/>
+      <circle cx="66" cy="25" r="2.5" fill="#7A9E7E" opacity=".8"/>
+      <path d="M54 33 Q60 37 66 33" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <rect x="44" y="48" width="32" height="52" rx="16" fill="#EEF4EB" stroke="#3D6B4A" stroke-width="1.5"/>
+      <path d="M44 62 Q26 72 37 88 Q44 96 60 90" stroke="#7A9E7E" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M76 62 Q94 72 83 88 Q76 96 60 90" stroke="#3D6B4A" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <ellipse cx="54" cy="88" rx="11" ry="7" fill="#7A9E7E" opacity=".3"/>
+      <ellipse cx="66" cy="83" rx="11" ry="7" fill="#3D6B4A" opacity=".3"/>
+      <path d="M50 100 L47 132" stroke="#3D6B4A" stroke-width="4" stroke-linecap="round"/>
+      <path d="M70 100 L73 132" stroke="#3D6B4A" stroke-width="4" stroke-linecap="round"/>
     </svg>
-    <p>Cruzá los brazos sobre el pecho como en la imagen.<br>Los pulgares entrelazados, las manos sobre hombros opuestos.</p>
+    <p>Cruzá los brazos sobre el pecho como en la imagen.<br>Los pulgares entrelazados, manos sobre hombros opuestos.</p>
   </div>
   <div id="butterfly-idle">
     <button id="butterfly-start" class="btn-primary">Comenzar</button>
@@ -375,15 +381,15 @@ const Selector = (() => {
     return `
 <div id="mod-grounding">
   <div id="grounding-idle">
-    <p class="mod-idle-text">5 pasos · 3-5 minutos. Te trae al presente usando los 5 sentidos.</p>
+    <p class="mod-idle-text">5 pasos · 3 a 5 minutos. Te trae al presente usando los 5 sentidos.</p>
     <button id="grounding-start" class="btn-primary">Comenzar grounding</button>
   </div>
   <div id="grounding-active" class="hidden">
     <div id="grounding-progress" class="grounding-progress" aria-live="polite"></div>
     <div id="grounding-step-card" class="grounding-step-card">
-      <span id="g-emoji"       class="g-emoji">👁️</span>
-      <div  id="g-count"       class="g-count">5 COSAS</div>
-      <p    id="g-instruction" class="g-instruction"></p>
+      <span id="g-emoji"        class="g-emoji">👁️</span>
+      <div  id="g-count"        class="g-count">5 COSAS</div>
+      <p    id="g-instruction"  class="g-instruction"></p>
       <textarea id="g-input" class="grounding-input" rows="2" placeholder=""></textarea>
     </div>
     <button id="grounding-next" class="btn-primary" style="margin-top:12px">Listo, siguiente →</button>
@@ -404,12 +410,10 @@ const Selector = (() => {
         { id: 'CFGLoQIhmow', label: 'Lofi Girl mix' },
         { id: 'lA9FONoiuFA', label: 'Best of Lofi 2024' },
         { id: 'lTRiuFIWV54', label: '1 A.M Study Session' },
-        { id: 'l98w9OSKVNA', label: '12 A.M Study Session' },
       ]},
       { id: 'rain',     label: 'Lluvia',   videos: [
         { id: 'zC4nzOl6xLQ', label: 'Lluvia 1 hora' },
         { id: 'hzAxtosyeNQ', label: 'Lluvia intensa' },
-        { id: 'jHwkDrU0bkE', label: 'Lluvia suave' },
       ]},
       { id: 'binaural', label: 'Binaural', videos: [
         { id: 'WPni755-Krg', label: 'Ondas Alpha 10 Hz' },
@@ -417,8 +421,7 @@ const Selector = (() => {
       ]},
       { id: 'noise',    label: 'Ruido',    videos: [
         { id: 'HJMnIfd6Lcg', label: 'Ruido marrón' },
-        { id: 'MT0Ta_Qldrs', label: 'Ruido marrón profundo' },
-        { id: 'nMfPqeZjc2c', label: 'Ruido blanco' },
+        { id: 'MT0Ta_Qldrs', label: 'Ruido profundo' },
       ]},
       { id: 'piano',    label: 'Piano',    videos: [
         { id: 'Dx5qFachd3A', label: 'Jazz relajante' },
@@ -433,9 +436,8 @@ const Selector = (() => {
     const panels = cats.map((c, i) => {
       const iframes = c.videos.map(v => `
 <div class="music-item">
-  <iframe src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1"
-    title="${v.label}"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  <iframe src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1&autoplay=0"
+    title="${v.label}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen loading="lazy" frameborder="0"></iframe>
   <div class="music-label">${v.label}</div>
 </div>`).join('');
@@ -444,10 +446,10 @@ const Selector = (() => {
 
     return `
 <div id="mod-music">
-  <p class="mod-idle-text" style="text-align:left;margin-bottom:16px">Elegí una categoría y dejá correr. Usá auriculares para binaural y ruido.</p>
+  <p class="mod-idle-text" style="text-align:left;margin-bottom:16px">Elegí una categoría. Usá auriculares para binaural y ruido.</p>
   <div class="music-tabs" role="tablist">${tabs}</div>
   <div class="music-panels">${panels}</div>
-  <p class="static-note">Todos los videos tienen duración fija — no son livestreams.</p>
+  <p class="static-note">Todos los videos tienen duración fija. Verificado: ninguno es livestream.</p>
 </div>`;
   }
 
@@ -466,13 +468,12 @@ const Selector = (() => {
     });
   }
 
-  /* ── Static fallback for modules without interactive handler ─ */
   function getStaticHTML(mod) {
     if (!mod) return '';
     return `
 <div class="static-module">
-  <p style="font-size:14px;color:var(--text-sub);line-height:1.6;margin-bottom:16px">${mod.description}</p>
-  <p class="static-note">Podés practicar esta técnica sin guía digital. Próximamente con ejercicio interactivo.</p>
+  <p style="font-size:15px;color:var(--color-text-muted);line-height:1.7;margin-bottom:16px">${mod.description}</p>
+  <p class="static-note">Podés practicar esta técnica sin guía. Próximamente con ejercicio interactivo.</p>
 </div>`;
   }
 
