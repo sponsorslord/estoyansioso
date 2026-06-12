@@ -45,12 +45,14 @@ const ButterflyModule = (() => {
   let elWingLeft, elWingRight;
   let elTapLeft, elTapRight;
   let btnStart, btnPause, btnReset, btnRepeat, btnDone;
+  let elStepCard;
 
   function init() {
     const card = document.getElementById('mod-butterfly');
     if (!card) return;
 
     elIdle       = document.getElementById('butterfly-idle');
+    elStepCard   = document.getElementById('bf-step-card');
     elActive     = document.getElementById('butterfly-active');
     elEnd        = document.getElementById('butterfly-end');
     elStepNum    = document.getElementById('bf-step-num');
@@ -187,5 +189,14 @@ const ButterflyModule = (() => {
     tapTimer  = null;
   }
 
-  return { init };
+  function destroy() {
+    clearTimers();
+    clearInterval(tapTimer);
+    tapTimer  = null;
+    stepTimer = null;
+    running   = false;
+    paused    = false;
+  }
+
+  return { init, destroy };
 })();

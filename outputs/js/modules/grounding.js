@@ -129,5 +129,9 @@ const GroundingModule = (() => {
     elEnd.classList.remove('hidden');
   }
 
-  return { init };
+  function destroy() {
+    stepIdx = 0;
+  }
+
+  return { init, destroy };
 })();

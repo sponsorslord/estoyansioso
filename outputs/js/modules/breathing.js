@@ -217,5 +217,11 @@ const BreathingModule = (() => {
     elCycles.setAttribute('aria-label', `Ciclo ${current} de ${MAX_CYCLES}`);
   }
 
-  return { init };
+  function destroy() {
+    cancelAnimationFrame(rAF);
+    running = false;
+    paused  = false;
+  }
+
+  return { init, destroy };
 })();

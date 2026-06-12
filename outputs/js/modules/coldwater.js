@@ -115,5 +115,10 @@ const ColdWaterModule = (() => {
     elEnd.classList.remove('hidden');
   }
 
-  return { init };
+  function destroy() {
+    cancelAnimationFrame(rAF);
+    running = false;
+  }
+
+  return { init, destroy };
 })();
