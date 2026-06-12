@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0F0F1A"/>
+  <title>estoyansioso.com — Herramientas que funcionan</title>
+  <meta name="description" content="Respiraciones, sonidos, ejercicios y guías para bajar la ansiedad. Gratis, sin registro, en cualquier momento."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav" aria-label="Navegación principal">
+    <a href="#hero" class="nav-logo">estoyansioso<span class="nav-dot">.com</span></a>
+    <div class="nav-links">
+      <a href="#respiracion">Respiración</a>
+      <a href="#emergencia">Emergencia</a>
+      <a href="#grounding">Grounding</a>
+      <a href="#musica">Música</a>
+    </div>
+    <button class="anxiety-btn" id="anxiety-btn" aria-haspopup="dialog">¿Qué tan ansioso estás?</button>
+  </nav>
+
+  <!-- ANXIETY SELECTOR MODAL -->
+  <div id="anxiety-modal" class="modal" role="dialog" aria-modal="true" aria-label="Nivel de ansiedad" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-box">
+      <p class="modal-label">¿Cómo estás ahora mismo?</p>
+      <button class="modal-option" data-target="respiracion">
+        <span class="option-chip high">Mucho</span>
+        <span class="option-desc">No puedo pensar, necesito algo ya</span>
+        <span class="option-arrow">→</span>
+      </button>
+      <button class="modal-option" data-target="grounding">
+        <span class="option-chip med">Bastante</span>
+        <span class="option-desc">Necesito calmarme</span>
+        <span class="option-arrow">→</span>
+      </button>
+      <button class="modal-option" data-target="musica">
+        <span class="option-chip low">Un poco</span>
+        <span class="option-desc">Quiero bajar el volumen</span>
+        <span class="option-arrow">→</span>
+      </button>
+      <button class="modal-close" aria-label="Cerrar">✕</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-headline">Estás ansioso.<br>Está bien.<br>Acá hay cosas que funcionan.</h1>
+      <p class="hero-sub">Respiraciones, sonidos, ejercicios y guías para bajar la ansiedad.<br>Gratis, sin registro, en cualquier momento.</p>
+      <button class="anxiety-btn hero-anxiety-btn" id="hero-anxiety-btn">¿Por dónde empezar?</button>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span>↓</span>
+      <span>explorá</span>
+    </div>
+  </section>
+
+  <!-- ═══ SECCIÓN 1: RESPIRACIÓN ═══════════════════════════════════════ -->
+  <section id="respiracion" class="page-section">
+    <div class="section-intro">
+      <div class="section-num">01</div>
+      <h2 class="section-title">Respirá con esto.<br>Funciona en 90 segundos.</h2>
+    </div>
+
+    <!-- Module: Box Breathing -->
+    <div class="module-card" id="mod-box">
+      <div class="module-header">
+        <div class="module-icon">🟣</div>
+        <div>
+          <h3 class="module-name">Respiración Cuadrada <span class="module-tag">4-4-4-4</span></h3>
+          <p class="module-also">Box Breathing · Tactical Breathing (Navy SEALs)</p>
+        </div>
+      </div>
+      <div class="module-metrics">
+        <div class="metric"><span class="metric-label">Efecto</span><span class="metric-dots" data-score="5"></span></div>
+        <div class="metric"><span class="metric-label">Velocidad</span><span class="metric-time">90 seg</span></div>
+        <div class="metric-chips">
+          <span class="chip">Ansiedad aguda</span>
+          <span class="chip">Pánico</span>
+          <span class="chip">Estrés laboral</span>
+          <span class="chip">Pre-evento</span>
+        </div>
+        <div class="metric-badges">
+          <span class="badge" title="Actúa sobre el cuerpo">🏃 Cuerpo</span>
+          <span class="badge" title="Actúa sobre la mente">🧠 Mente</span>
+        </div>
+      </div>
+
+      <!-- IDLE STATE -->
+      <div class="module-idle" id="box-idle">
+        <p class="module-desc">4 fases iguales de 4 segundos. Inhalás, retenés, exhalás, pausás. El patrón rítmico activa el nervio vago y reduce el cortisol en minutos.</p>
+        <button class="btn-primary" id="box-start" aria-label="Empezar respiración cuadrada">Empezar</button>
+      </div>
+
+      <!-- ACTIVE STATE -->
+      <div class="module-active hidden" id="box-active">
+        <div class="breath-scene" id="box-scene">
+          <div class="breath-bg-overlay" id="box-overlay"></div>
+          <div class="breath-ring-wrap" aria-live="polite" aria-atomic="true">
+            <svg class="breath-ring" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="ring-track" cx="100" cy="100" r="88"/>
+              <circle class="ring-progress" id="box-ring" cx="100" cy="100" r="88"/>
+            </svg>
+            <div class="breath-inner">
+              <div class="breath-label" id="box-label">INHALÁ</div>
+              <div class="breath-counter" id="box-counter">4</div>
+              <div class="breath-sublabel" id="box-sublabel"></div>
+            </div>
+          </div>
+        </div>
+        <p class="breath-instruction" id="box-instruction">Respirá profundo por la nariz.</p>
+        <div class="cycle-track" id="box-cycles" aria-label="Progreso de ciclos"></div>
+        <div class="module-controls">
+          <button class="btn-secondary" id="box-pause">⏸ Pausar</button>
+          <button class="btn-ghost" id="box-reset">↺ Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- END STATE -->
+      <div class="module-end hidden" id="box-end">
+        <div class="end-content">
+          <div class="end-icon">✓</div>
+          <p class="end-msg">Hiciste 5 ciclos completos.<br>Tu sistema nervioso ya empezó a regularse.</p>
+          <button class="btn-primary" id="box-repeat">Repetir</button>
+          <button class="btn-ghost" id="box-done">Listo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECCIÓN 2: EMERGENCIA FÍSICA ════════════════════════════════ -->
+  <section id="emergencia" class="page-section">
+    <div class="section-intro">
+      <div class="section-num">02</div>
+      <h2 class="section-title">Ansiedad muy alta.<br>Técnicas de efecto inmediato.</h2>
+    </div>
+
+    <!-- Module: Cold Water -->
+    <div class="module-card" id="mod-water">
+      <div class="module-header">
+        <div class="module-icon">🥶</div>
+        <div>
+          <h3 class="module-name">Agua Fría <span class="module-tag">Reflejo de buceo</span></h3>
+          <p class="module-also">Trigeminal-vagal reflex</p>
+        </div>
+      </div>
+      <div class="module-metrics">
+        <div class="metric"><span class="metric-label">Efecto</span><span class="metric-dots" data-score="5"></span></div>
+        <div class="metric"><span class="metric-label">Velocidad</span><span class="metric-time">5-30 seg</span></div>
+        <div class="metric-chips">
+          <span class="chip urgent">Pánico agudo</span>
+          <span class="chip urgent">Taquicardia</span>
+          <span class="chip">Crisis de ansiedad</span>
+        </div>
+        <div class="metric-badges">
+          <span class="badge">🏃 Cuerpo</span>
+        </div>
+      </div>
+
+      <div class="module-idle" id="water-idle">
+        <div class="water-instruction-box">
+          <p class="water-big-text">Andá al baño.<br>Abrí el agua fría.<br>Pasala por tu cara<br><strong>30 segundos.</strong></p>
+          <p class="water-note">El agua fría activa el nervio trigémino y baja la frecuencia cardíaca entre 10–25% en 30 segundos.</p>
+        </div>
+        <button class="btn-primary btn-urgent" id="water-start">Iniciar cuenta regresiva</button>
+      </div>
+
+      <div class="module-active hidden" id="water-active">
+        <div class="water-timer-scene">
+          <div class="water-countdown" id="water-count" aria-live="polite">30</div>
+          <div class="water-label">segundos</div>
+          <div class="water-bar-wrap">
+            <div class="water-bar" id="water-bar"></div>
+          </div>
+          <p class="water-msg" id="water-msg">Agua fría en cara, frente y pómulos.</p>
+        </div>
+        <button class="btn-ghost" id="water-reset">↺ Reiniciar</button>
+      </div>
+
+      <div class="module-end hidden" id="water-end">
+        <div class="end-content">
+          <div class="end-icon">✓</div>
+          <p class="end-msg">Tu frecuencia cardíaca bajó.<br>El cuerpo hizo su trabajo.</p>
+          <button class="btn-primary" id="water-repeat">Repetir</button>
+          <button class="btn-ghost" id="water-done">Listo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module: Butterfly Hug -->
+    <div class="module-card" id="mod-butterfly">
+      <div class="module-header">
+        <div class="module-icon">🦋</div>
+        <div>
+          <h3 class="module-name">Butterfly Hug <span class="module-tag">Estimulación bilateral</span></h3>
+          <p class="module-also">Desarrollado en terapia EMDR, usado en crisis humanitarias</p>
+        </div>
+      </div>
+      <div class="module-metrics">
+        <div class="metric"><span class="metric-label">Efecto</span><span class="metric-dots" data-score="5"></span></div>
+        <div class="metric"><span class="metric-label">Velocidad</span><span class="metric-time">1-2 min</span></div>
+        <div class="metric-chips">
+          <span class="chip urgent">Pánico</span>
+          <span class="chip urgent">Angustia intensa</span>
+          <span class="chip">Crisis emocional</span>
+          <span class="chip">Trauma activado</span>
+        </div>
+        <div class="metric-badges">
+          <span class="badge">🏃 Cuerpo</span>
+          <span class="badge">🧠 Mente</span>
+        </div>
+      </div>
+
+      <div class="module-idle" id="butterfly-idle">
+        <p class="module-desc">Cruzá los brazos sobre el pecho y golpeá alternadamente con cada mano, como las alas de una mariposa. Combina auto-abrazo (oxitocina) con estimulación bilateral (similar al sueño REM).</p>
+        <button class="btn-primary" id="butterfly-start">Comenzar</button>
+      </div>
+
+      <div class="module-active hidden" id="butterfly-active">
+        <div class="butterfly-scene" aria-live="polite">
+          <div class="butterfly-anim" id="butterfly-wings" aria-hidden="true">
+            <div class="wing wing-left" id="wing-left">🦋</div>
+            <div class="wing-body"></div>
+            <div class="wing wing-right" id="wing-right">🦋</div>
+          </div>
+          <div class="butterfly-step" id="butterfly-step-display">
+            <div class="step-num" id="bf-step-num">1 / 4</div>
+            <div class="step-label" id="bf-step-label">CRUZÁ</div>
+            <div class="step-desc" id="bf-step-desc">Cruzá los brazos sobre el pecho. Los pulgares entrelazados forman el cuerpo de la mariposa.</div>
+          </div>
+          <div class="butterfly-tap-indicator" id="bf-tap" aria-hidden="true">
+            <span class="tap left" id="tap-left">●</span>
+            <span class="tap right" id="tap-right">●</span>
+          </div>
+        </div>
+        <div class="module-controls">
+          <button class="btn-secondary" id="butterfly-pause">⏸ Pausar</button>
+          <button class="btn-ghost" id="butterfly-reset">↺ Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="module-end hidden" id="butterfly-end">
+        <div class="end-content">
+          <div class="end-icon">🦋</div>
+          <p class="end-msg">Bien hecho.<br>Observá cómo se siente tu cuerpo ahora.</p>
+          <button class="btn-primary" id="butterfly-repeat">Repetir</button>
+          <button class="btn-ghost" id="butterfly-done">Listo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECCIÓN 3: GROUNDING ══════════════════════════════════════════ -->
+  <section id="grounding" class="page-section">
+    <div class="section-intro">
+      <div class="section-num">03</div>
+      <h2 class="section-title">Anclate al presente.<br>5 pasos, 5 sentidos.</h2>
+    </div>
+
+    <div class="module-card" id="mod-grounding">
+      <div class="module-header">
+        <div class="module-icon">👁️</div>
+        <div>
+          <h3 class="module-name">Grounding <span class="module-tag">5-4-3-2-1</span></h3>
+          <p class="module-also">Técnica de anclaje sensorial — CBT y DBT</p>
+        </div>
+      </div>
+      <div class="module-metrics">
+        <div class="metric"><span class="metric-label">Efecto</span><span class="metric-dots" data-score="5"></span></div>
+        <div class="metric"><span class="metric-label">Velocidad</span><span class="metric-time">3-5 min</span></div>
+        <div class="metric-chips">
+          <span class="chip urgent">Pánico</span>
+          <span class="chip">Disociación</span>
+          <span class="chip">Ansiedad social</span>
+          <span class="chip">Pensamientos en bucle</span>
+        </div>
+        <div class="metric-badges">
+          <span class="badge">🏃 Cuerpo</span>
+          <span class="badge">🧠 Mente</span>
+          <span class="badge">👥 Social</span>
+        </div>
+      </div>
+
+      <div class="module-idle" id="grounding-idle">
+        <p class="module-desc">Usá los 5 sentidos para interrumpir el ciclo de pensamientos ansiosos. Vas a ver una sola instrucción a la vez. Tomátelo con calma.</p>
+        <button class="btn-primary" id="grounding-start">Empezar</button>
+      </div>
+
+      <div class="module-active hidden" id="grounding-active">
+        <div class="grounding-scene">
+          <div class="grounding-progress" id="grounding-progress" aria-label="Progreso grounding"></div>
+          <div class="grounding-step-card" id="grounding-step-card">
+            <div class="grounding-emoji" id="g-emoji">👁️</div>
+            <div class="grounding-count" id="g-count">5 COSAS</div>
+            <p class="grounding-instruction" id="g-instruction">Mirá alrededor. Nombrá 5 cosas que podés ver. Sé específico.</p>
+            <div class="grounding-input-wrap">
+              <textarea class="grounding-input" id="g-input" placeholder="Escribí lo que ves... (opcional, no se guarda)" aria-label="Espacio para escribir tu respuesta" rows="3"></textarea>
+            </div>
+          </div>
+          <button class="btn-primary grounding-next" id="grounding-next">Listo, siguiente →</button>
+        </div>
+      </div>
+
+      <div class="module-end hidden" id="grounding-end">
+        <div class="end-content">
+          <div class="end-icon">🌱</div>
+          <p class="end-msg">Hiciste los 5 pasos.<br>Estás acá, en este momento.</p>
+          <button class="btn-primary" id="grounding-repeat">Repetir</button>
+          <button class="btn-ghost" id="grounding-done">Listo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECCIÓN 4: MÚSICA ══════════════════════════════════════════════ -->
+  <section id="musica" class="page-section">
+    <div class="section-intro">
+      <div class="section-num">04</div>
+      <h2 class="section-title">A veces lo único que<br>necesitás es buen sonido.</h2>
+    </div>
+
+    <div class="music-grid">
+      <div class="music-card active" data-music="lofi">
+        <div class="music-card-header">
+          <span class="music-icon">🎵</span>
+          <div>
+            <div class="music-name">Lo-fi hip hop</div>
+            <div class="music-desc">Beats lentos e instrumentales para relajarse</div>
+          </div>
+        </div>
+        <div class="music-embed-wrap">
+          <!-- Lofi Girl - beats to relax/study to -->
+          <iframe id="yt-lofi" class="music-embed" src="https://www.youtube.com/embed/jfKfPfyJRdk?rel=0&modestbranding=1" title="Lo-fi hip hop beats" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="music-card" data-music="nature">
+        <div class="music-card-header">
+          <span class="music-icon">🌧️</span>
+          <div>
+            <div class="music-name">Lluvia y naturaleza</div>
+            <div class="music-desc">Sonidos del bosque y la lluvia para bajar la activación</div>
+          </div>
+        </div>
+        <div class="music-embed-wrap">
+          <!-- Heavy rain and forest sounds -->
+          <iframe id="yt-nature" class="music-embed" src="https://www.youtube.com/embed/BOdLHK25Pf0?rel=0&modestbranding=1" title="Sonidos de lluvia y naturaleza" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="music-card" data-music="binaural">
+        <div class="music-card-header">
+          <span class="music-icon">🎧</span>
+          <div>
+            <div class="music-name">Binaural Beats</div>
+            <div class="music-desc">Alpha (8–12 Hz): relajación alerta. Con auriculares.</div>
+          </div>
+        </div>
+        <div class="music-embed-wrap">
+          <!-- Greenred Productions - Alpha waves -->
+          <iframe id="yt-binaural" class="music-embed" src="https://www.youtube.com/embed/WPni755-Krg?rel=0&modestbranding=1" title="Binaural beats alpha waves" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ══════════════════════════════════════════════════════════ -->
+  <footer id="footer">
+    <div class="footer-content">
+      <div class="footer-health-note">
+        <p>⚠️ Este sitio no reemplaza la atención de un profesional de salud mental. Si la ansiedad interfiere con tu vida cotidiana, consultá con un psicólogo o psiquiatra.</p>
+      </div>
+      <div class="footer-resources">
+        <p class="footer-resources-title">Si estás en crisis, pedí ayuda:</p>
+        <div class="footer-links">
+          <a href="tel:135" class="footer-link emergency">📞 Centro de Asistencia al Suicida — 135 (Argentina, gratuito, 24hs)</a>
+          <a href="tel:08005222752" class="footer-link">📞 Línea de Salud Mental — 0800-999-0091 (Buenos Aires)</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>estoyansioso.com — Gratis, sin publicidad, sin registro.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/modules/breathing.js"></script>
+  <script src="js/modules/coldwater.js"></script>
+  <script src="js/modules/butterfly.js"></script>
+  <script src="js/modules/grounding.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
