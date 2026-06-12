@@ -65,6 +65,61 @@ const Selector = (() => {
       onExpand:  () => JournalingModule.init(),
       onCollapse:() => JournalingModule.destroy?.(),
     },
+    'physiological-sigh': {
+      getHTML:   getSighHTML,
+      onExpand:  () => SighModule.init(),
+      onCollapse:() => SighModule.destroy?.(),
+    },
+    'breathing-478': {
+      getHTML:   getBreathing478HTML,
+      onExpand:  () => Breathing478Module.init(),
+      onCollapse:() => Breathing478Module.destroy?.(),
+    },
+    'eft-tapping': {
+      getHTML:   getEftHTML,
+      onExpand:  () => EftModule.init(),
+      onCollapse:() => EftModule.destroy?.(),
+    },
+    'stretching': {
+      getHTML:   getStretchingHTML,
+      onExpand:  () => StretchingModule.init(),
+      onCollapse:() => StretchingModule.destroy?.(),
+    },
+    'self-massage': {
+      getHTML:   getSelfMassageHTML,
+      onExpand:  () => SelfMassageModule.init(),
+      onCollapse:() => SelfMassageModule.destroy?.(),
+    },
+    'pmr': {
+      getHTML:   getPmrHTML,
+      onExpand:  () => PmrModule.init(),
+      onCollapse:() => PmrModule.destroy?.(),
+    },
+    'meditation-3min': {
+      getHTML:   getMeditationHTML,
+      onExpand:  () => MeditationModule.init(),
+      onCollapse:() => MeditationModule.destroy?.(),
+    },
+    'cognitive-defusion': {
+      getHTML:   getCogDefusionHTML,
+      onExpand:  () => CogDefusionModule.init(),
+      onCollapse:() => CogDefusionModule.destroy?.(),
+    },
+    'body-scan': {
+      getHTML:   getBodyScanHTML,
+      onExpand:  () => BodyScanModule.init(),
+      onCollapse:() => BodyScanModule.destroy?.(),
+    },
+    'guided-visualization': {
+      getHTML:   getVisualizationHTML,
+      onExpand:  () => VisualizationModule.init(),
+      onCollapse:() => VisualizationModule.destroy?.(),
+    },
+    'cognitive-reframing': {
+      getHTML:   getCogReframingHTML,
+      onExpand:  () => CogReframingModule.init(),
+      onCollapse:() => CogReframingModule.destroy?.(),
+    },
   };
 
   /* ── Init ─────────────────────────────────────────────────── */
@@ -649,6 +704,367 @@ const Selector = (() => {
     <button id="journaling-timer-start" class="btn-secondary">⏱ Iniciar temporizador (10 min)</button>
     <button id="journaling-clear"       class="btn-secondary">Borrar todo</button>
   </div>
+</div>`;
+  }
+
+  /* ── Suspiro Fisiológico ─────────────────────────────────── */
+  function getSighHTML() {
+    return `
+<div id="mod-sigh">
+  <div id="sigh-idle">
+    <p class="mod-idle-text">3 rondas · 30 segundos. Inhalá profundo, un soplo corto más, y exhalá largo. Funciona inmediato.</p>
+    <button id="sigh-start" class="btn-primary">Empezar</button>
+  </div>
+  <div id="sigh-active" class="hidden">
+    <div id="sigh-rounds" class="breath-cycles" aria-live="polite"></div>
+    <div class="pose-phase-header" style="margin-top:12px">
+      <span id="sigh-label" class="bf-step-label">INHALÁ</span>
+    </div>
+    <p id="sigh-desc" class="bf-step-desc"></p>
+    <div id="sigh-count" class="water-count" aria-live="polite">3</div>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="sigh-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="sigh-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="sigh-end" class="hidden mod-end">
+    <p>Tres suspiros completos. Tu sistema nervioso ya frenó.</p>
+    <div class="end-actions">
+      <button id="sigh-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="sigh-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Respiración 4-7-8 ───────────────────────────────────── */
+  function getBreathing478HTML() {
+    return `
+<div id="mod-478">
+  <div id="b478-idle">
+    <p class="mod-idle-text">4 rondas · 3 minutos. La exhalación de 8 segundos activa el nervio vago. Ideal para antes de dormir.</p>
+    <button id="b478-start" class="btn-primary">Empezar</button>
+  </div>
+  <div id="b478-active" class="hidden">
+    <div id="b478-rounds" class="breath-cycles" aria-live="polite"></div>
+    <div class="pose-phase-header" style="margin-top:12px">
+      <span id="b478-label" class="bf-step-label">INHALÁ</span>
+    </div>
+    <p id="b478-desc" class="bf-step-desc"></p>
+    <div id="b478-count" class="water-count" aria-live="polite">4</div>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="b478-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="b478-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="b478-end" class="hidden mod-end">
+    <p>4 ciclos completados. El cuerpo está en modo descanso.</p>
+    <div class="end-actions">
+      <button id="b478-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="b478-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── EFT Tapping ─────────────────────────────────────────── */
+  function getEftHTML() {
+    return `
+<div id="mod-eft">
+  <div id="eft-idle">
+    <p class="mod-idle-text">9 puntos de acupresión · 5-7 minutos. Golpeá cada punto 7 veces mientras decís la frase en voz alta.</p>
+    <button id="eft-start" class="btn-primary">Comenzar EFT</button>
+  </div>
+  <div id="eft-active" class="hidden">
+    <div id="bf-step-card" style="background:var(--color-surface);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px">
+      <div id="eft-step-num"      class="bf-step-num">1 / 9</div>
+      <div id="eft-step-label"    class="bf-step-label">LADO DE LA MANO</div>
+      <div id="eft-step-location" class="bf-step-desc" style="font-size:13px;opacity:.75;margin-top:4px"></div>
+      <p   id="eft-step-phrase"   style="font-style:italic;color:var(--color-text);margin-top:12px;font-size:16px;line-height:1.5"></p>
+    </div>
+    <p class="static-note">Golpeá 7 veces el punto mientras repetís la frase.</p>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="eft-next"  class="btn-primary" style="width:auto;padding:10px 24px">Siguiente punto →</button>
+      <button id="eft-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="eft-end" class="hidden mod-end">
+    <p>Secuencia EFT completa. La activación emocional bajó de intensidad.</p>
+    <div class="end-actions">
+      <button id="eft-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="eft-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Estiramiento ────────────────────────────────────────── */
+  function getStretchingHTML() {
+    return `
+<div id="mod-stretching">
+  <div id="str-idle">
+    <p class="mod-idle-text">6 estiramientos · 3 minutos. Cuello, hombros y espalda — las zonas donde la ansiedad se acumula.</p>
+    <button id="str-start" class="btn-primary">Empezar a estirar</button>
+  </div>
+  <div id="str-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="str-step-num"   class="bf-step-num">1 / 6</span>
+      <span id="str-step-label" class="bf-step-label">CUELLO DERECHO</span>
+    </div>
+    <p id="str-step-desc" class="bf-step-desc"></p>
+    <div id="str-count" class="water-count" aria-live="polite">30</div>
+    <div class="water-bar-wrap"><div id="str-bar" class="water-bar"></div></div>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="str-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="str-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="str-end" class="hidden mod-end">
+    <p>Secuencia completa. Las zonas de tensión se soltaron.</p>
+    <div class="end-actions">
+      <button id="str-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="str-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Automasaje ──────────────────────────────────────────── */
+  function getSelfMassageHTML() {
+    return `
+<div id="mod-selfmassage">
+  <div id="mass-idle">
+    <p class="mod-idle-text">5 zonas · 2.5 minutos. El tacto propio libera oxitocina aunque sepas que sos vos quien lo hace.</p>
+    <button id="mass-start" class="btn-primary">Empezar automasaje</button>
+  </div>
+  <div id="mass-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="mass-step-num"   class="bf-step-num">1 / 5</span>
+      <span id="mass-step-label" class="bf-step-label">CUERO CABELLUDO</span>
+    </div>
+    <p id="mass-step-desc" class="bf-step-desc"></p>
+    <div id="mass-count" class="water-count" aria-live="polite">30</div>
+    <div class="water-bar-wrap"><div id="mass-bar" class="water-bar"></div></div>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="mass-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="mass-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="mass-end" class="hidden mod-end">
+    <p>Zonas completas. La oxitocina ya está circulando.</p>
+    <div class="end-actions">
+      <button id="mass-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="mass-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── PMR ─────────────────────────────────────────────────── */
+  function getPmrHTML() {
+    return `
+<div id="mod-pmr">
+  <div id="pmr-idle">
+    <p class="mod-idle-text">10 grupos musculares · 15-20 minutos. Tensá 5 seg, soltá 20 seg. El cuerpo aprende qué es relajarse de verdad.</p>
+    <button id="pmr-start" class="btn-primary">Empezar PMR</button>
+  </div>
+  <div id="pmr-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="pmr-step-num"   class="bf-step-num">1 / 10</span>
+      <span id="pmr-step-label" class="bf-step-label">PIES</span>
+    </div>
+    <div style="text-align:center;margin:8px 0">
+      <span id="pmr-phase-label" class="bf-step-label" style="font-size:20px;color:var(--color-accent-dark)">TENSÁ</span>
+    </div>
+    <p id="pmr-phase-desc" class="bf-step-desc"></p>
+    <div id="pmr-count" class="water-count" aria-live="polite">5</div>
+    <div class="water-bar-wrap"><div id="pmr-bar" class="water-bar"></div></div>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="pmr-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="pmr-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="pmr-end" class="hidden mod-end">
+    <p>PMR completo. Tu sistema nervioso está en modo relajación profunda.</p>
+    <div class="end-actions">
+      <button id="pmr-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="pmr-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Meditación 3 Minutos ────────────────────────────────── */
+  function getMeditationHTML() {
+    return `
+<div id="mod-meditation">
+  <div id="med-idle">
+    <p class="mod-idle-text">3 fases · 3 minutos. Sin necesidad de mente en blanco. Solo prestá atención durante 3 minutos.</p>
+    <button id="med-start" class="btn-primary">Comenzar meditación</button>
+  </div>
+  <div id="med-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="med-phase-num"   class="bf-step-num">1 / 3</span>
+      <span id="med-phase-label" class="bf-step-label">NOTÁ</span>
+    </div>
+    <p id="med-phase-desc" class="bf-step-desc"></p>
+    <div id="med-count" class="water-count" aria-live="polite">60</div>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="med-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="med-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="med-end" class="hidden mod-end">
+    <p>Tres minutos de presencia. Bien hecho.</p>
+    <div class="end-actions">
+      <button id="med-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="med-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Defusión Cognitiva ──────────────────────────────────── */
+  function getCogDefusionHTML() {
+    return `
+<div id="mod-defusion">
+  <div id="def-step-1">
+    <p class="mod-idle-text" style="text-align:left">Paso 1 de 3 · Escribí el pensamiento ansioso tal como aparece en tu cabeza.</p>
+    <textarea id="def-ta-1" class="journaling-textarea" rows="4" placeholder='Ej: "Si no lo hago perfecto, todo va a salir mal..."'></textarea>
+    <div class="controls-row" style="margin-top:12px">
+      <button id="def-next-1" class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+    </div>
+  </div>
+  <div id="def-step-2" class="hidden">
+    <p class="mod-idle-text" style="text-align:left">Paso 2 de 3 · Reescribilo empezando con exactamente esta frase:</p>
+    <p style="font-style:italic;font-size:15px;color:var(--color-text-muted);margin-bottom:10px">"Estoy teniendo el pensamiento de que..."</p>
+    <textarea id="def-ta-2" class="journaling-textarea" rows="4" placeholder="Estoy teniendo el pensamiento de que..."></textarea>
+    <div class="controls-row" style="margin-top:12px">
+      <button id="def-next-2" class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+    </div>
+  </div>
+  <div id="def-step-3" class="hidden">
+    <p class="mod-idle-text" style="text-align:left">Paso 3 de 3 · ¿El pensamiento pesa lo mismo ahora? Escribí lo que notás. (Opcional)</p>
+    <textarea id="def-ta-3" class="journaling-textarea" rows="4" placeholder="Notá la diferencia..."></textarea>
+    <div class="controls-row" style="margin-top:12px">
+      <button id="def-next-3" class="btn-primary" style="width:auto;padding:10px 24px">Terminar</button>
+    </div>
+  </div>
+  <div id="def-end" class="hidden mod-end">
+    <p>Tomaste distancia del pensamiento. Eso es la defusión.</p>
+    <div class="end-actions">
+      <button id="def-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="def-clear"  class="btn-secondary">Borrar y cerrar</button>
+    </div>
+  </div>
+  <p class="static-note" style="margin-top:12px">Lo que escribís no se guarda.</p>
+</div>`;
+  }
+
+  /* ── Body Scan ───────────────────────────────────────────── */
+  function getBodyScanHTML() {
+    return `
+<div id="mod-bodyscan">
+  <div id="bs-idle">
+    <p class="mod-idle-text">8 zonas · 7 minutos. Recorrés el cuerpo sin juzgar. Solo sentir.</p>
+    <button id="bs-start" class="btn-primary">Comenzar body scan</button>
+  </div>
+  <div id="bs-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="bs-step-num"   class="bf-step-num">1 / 8</span>
+      <span id="bs-step-label" class="bf-step-label">PIES</span>
+    </div>
+    <p id="bs-step-desc" class="bf-step-desc"></p>
+    <div id="bs-count" class="water-count" aria-live="polite">50</div>
+    <div class="water-bar-wrap"><div id="bs-bar" class="water-bar"></div></div>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="bs-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="bs-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="bs-end" class="hidden mod-end">
+    <p>Recorrido completo. Estás en tu cuerpo, en el presente.</p>
+    <div class="end-actions">
+      <button id="bs-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="bs-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Visualización Guiada ────────────────────────────────── */
+  function getVisualizationHTML() {
+    return `
+<div id="mod-viz">
+  <div id="viz-idle">
+    <p class="mod-idle-text">6 pasos guiados · 10-20 minutos. Construís un lugar seguro con todos los sentidos.</p>
+    <button id="viz-start" class="btn-primary">Comenzar visualización</button>
+  </div>
+  <div id="viz-active" class="hidden">
+    <div id="bf-step-card" style="background:var(--color-surface);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px">
+      <div id="viz-step-num"   class="bf-step-num">1 / 6</div>
+      <div id="viz-step-label" class="bf-step-label">PREPARATE</div>
+      <p   id="viz-step-desc"  class="bf-step-desc" style="margin-top:12px"></p>
+    </div>
+    <p class="static-note">Tomá el tiempo que necesitás en cada paso.</p>
+    <div class="controls-row" style="margin-top:16px">
+      <button id="viz-next"  class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+      <button id="viz-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="viz-end" class="hidden mod-end">
+    <p>Tu lugar seguro existe cuando lo necesitás. Volvé cuando quieras.</p>
+    <div class="end-actions">
+      <button id="viz-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="viz-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  /* ── Reencuadre Cognitivo ────────────────────────────────── */
+  function getCogReframingHTML() {
+    return `
+<div id="mod-reframing">
+  <div id="ref-step-1">
+    <p class="mod-idle-text" style="text-align:left">Paso 1 de 4 · ¿Cuál es el pensamiento ansioso?</p>
+    <textarea id="ref-ta-1" class="journaling-textarea" rows="3" placeholder="Escribilo tal como aparece en tu cabeza."></textarea>
+    <div class="controls-row" style="margin-top:10px">
+      <button id="ref-next-1" class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+    </div>
+  </div>
+  <div id="ref-step-2" class="hidden">
+    <p class="mod-idle-text" style="text-align:left">Paso 2 de 4 · Evidencia A FAVOR de que ese pensamiento es cierto.</p>
+    <p style="font-size:13px;color:var(--color-text-faint);margin-bottom:8px">Hechos concretos, no sensaciones.</p>
+    <textarea id="ref-ta-2" class="journaling-textarea" rows="3" placeholder="Escribí hechos reales que apoyan este pensamiento..."></textarea>
+    <div class="controls-row" style="margin-top:10px">
+      <button id="ref-next-2" class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+    </div>
+  </div>
+  <div id="ref-step-3" class="hidden">
+    <p class="mod-idle-text" style="text-align:left">Paso 3 de 4 · Evidencia EN CONTRA.</p>
+    <p style="font-size:13px;color:var(--color-text-faint);margin-bottom:8px">Veces que el miedo no se cumplió, recursos que tenés...</p>
+    <textarea id="ref-ta-3" class="journaling-textarea" rows="3" placeholder="¿Qué contradice ese pensamiento?"></textarea>
+    <div class="controls-row" style="margin-top:10px">
+      <button id="ref-next-3" class="btn-primary" style="width:auto;padding:10px 24px">Siguiente →</button>
+    </div>
+  </div>
+  <div id="ref-step-4" class="hidden">
+    <p class="mod-idle-text" style="text-align:left">Paso 4 de 4 · Versión más equilibrada.</p>
+    <p style="font-size:13px;color:var(--color-text-faint);margin-bottom:8px">No tiene que ser optimista. Solo más realista.</p>
+    <textarea id="ref-ta-4" class="journaling-textarea" rows="3" placeholder='Ej: "Puede que salga mal, y si sale mal lo voy a poder manejar."'></textarea>
+    <div class="controls-row" style="margin-top:10px">
+      <button id="ref-next-4" class="btn-primary" style="width:auto;padding:10px 24px">Terminar</button>
+    </div>
+  </div>
+  <div id="ref-end" class="hidden mod-end">
+    <p>Reencuadre completo. El pensamiento no cambió, pero vos lo mirás distinto.</p>
+    <div class="end-actions">
+      <button id="ref-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="ref-clear"  class="btn-secondary">Borrar y cerrar</button>
+    </div>
+  </div>
+  <p class="static-note" style="margin-top:12px">Lo que escribís no se guarda.</p>
 </div>`;
   }
 
