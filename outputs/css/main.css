@@ -516,6 +516,59 @@ body {
 .footer-credit { font-size: 11px; color: var(--color-text-faint); }
 
 /* ════════════════════════════════════════════════════════════
+   New modules: smile, pose, humming, journaling
+   ════════════════════════════════════════════════════════════ */
+.smile-emoji {
+  font-size: 64px;
+  text-align: center;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.pose-phase-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.journaling-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--color-text);
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 180px;
+  outline: none;
+  transition: border-color .2s;
+}
+.journaling-textarea:focus { border-color: var(--color-accent); }
+.journaling-textarea::placeholder { color: var(--color-text-faint); }
+
+.journaling-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.journaling-timer {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-accent-dark);
+  min-width: 54px;
+  letter-spacing: .02em;
+}
+
+/* ════════════════════════════════════════════════════════════
    Responsive
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 520px) {

@@ -35,6 +35,36 @@ const Selector = (() => {
       onExpand:  () => initMusicTabs(),
       onCollapse:() => {},
     },
+    'gargling': {
+      getHTML:   getGarglingHTML,
+      onExpand:  () => GarglingModule.init(),
+      onCollapse:() => GarglingModule.destroy?.(),
+    },
+    'smile-laughter': {
+      getHTML:   getSmileHTML,
+      onExpand:  () => SmileModule.init(),
+      onCollapse:() => SmileModule.destroy?.(),
+    },
+    'movement-express': {
+      getHTML:   getMovementHTML,
+      onExpand:  () => MovementModule.init(),
+      onCollapse:() => MovementModule.destroy?.(),
+    },
+    'power-pose': {
+      getHTML:   getPowerPoseHTML,
+      onExpand:  () => PowerPoseModule.init(),
+      onCollapse:() => PowerPoseModule.destroy?.(),
+    },
+    'humming-voo': {
+      getHTML:   getHummingHTML,
+      onExpand:  () => HummingModule.init(),
+      onCollapse:() => HummingModule.destroy?.(),
+    },
+    'journaling': {
+      getHTML:   getJournalingHTML,
+      onExpand:  () => JournalingModule.init(),
+      onCollapse:() => JournalingModule.destroy?.(),
+    },
   };
 
   /* ── Init ─────────────────────────────────────────────────── */
@@ -466,6 +496,160 @@ const Selector = (() => {
         container.querySelector(`.music-panel[data-cat="${cat}"]`)?.classList.remove('hidden');
       });
     });
+  }
+
+  function getGarglingHTML() {
+    return `
+<div id="mod-gargling">
+  <div id="gargling-idle">
+    <p class="mod-idle-text">Necesitás un vaso con agua fría. Las gárgaras activan el nervio vago en 30 segundos.</p>
+    <button id="gargling-start" class="btn-primary">Tengo el agua, empezar</button>
+  </div>
+  <div id="gargling-active" class="hidden">
+    <div id="gargling-count" class="water-count" aria-live="polite">30</div>
+    <div class="water-bar-wrap"><div id="gargling-bar" class="water-bar"></div></div>
+    <p id="gargling-msg" class="water-msg"></p>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="gargling-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="gargling-end" class="hidden mod-end">
+    <p>Listo. Las gárgaras estimularon el nervio vago — tu sistema nervioso está más calmado.</p>
+    <div class="end-actions">
+      <button id="gargling-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="gargling-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function getSmileHTML() {
+    return `
+<div id="mod-smile">
+  <div id="smile-idle">
+    <p class="mod-idle-text">20 segundos de sonrisa exagerada y risa forzada. El cerebro no distingue la risa real de la actuada.</p>
+    <button id="smile-start" class="btn-primary">Empezar</button>
+  </div>
+  <div id="smile-active" class="hidden">
+    <div id="smile-emoji" class="smile-emoji" aria-hidden="true">😄</div>
+    <div id="smile-count" class="water-count" aria-live="polite">20</div>
+    <div class="water-bar-wrap"><div id="smile-bar" class="water-bar"></div></div>
+    <p id="smile-msg" class="water-msg"></p>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="smile-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="smile-end" class="hidden mod-end">
+    <p>Hecho. El cerebro recibió la señal. El humor forzado igual libera endorfinas.</p>
+    <div class="end-actions">
+      <button id="smile-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="smile-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function getMovementHTML() {
+    return `
+<div id="mod-movement">
+  <div id="movement-idle">
+    <p class="mod-idle-text">60 segundos de saltos, sacudidas o cualquier movimiento intenso. La adrenalina necesita ser drenada físicamente.</p>
+    <button id="movement-start" class="btn-primary">Empezar a moverme</button>
+  </div>
+  <div id="movement-active" class="hidden">
+    <div id="movement-count" class="water-count" aria-live="polite">60</div>
+    <div class="water-bar-wrap"><div id="movement-bar" class="water-bar"></div></div>
+    <p id="movement-msg" class="water-msg"></p>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="movement-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="movement-end" class="hidden mod-end">
+    <p>Bien. El exceso de adrenalina se drenó. Tu cuerpo puede relajarse ahora.</p>
+    <div class="end-actions">
+      <button id="movement-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="movement-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function getPowerPoseHTML() {
+    return `
+<div id="mod-pose">
+  <div id="pose-idle">
+    <p class="mod-idle-text">3 fases · 2 minutos. De pie, postura expansiva. El cuerpo le dice al cerebro que está en control.</p>
+    <button id="pose-start" class="btn-primary">Levantarme y empezar</button>
+  </div>
+  <div id="pose-active" class="hidden">
+    <div class="pose-phase-header">
+      <span id="pose-phase-num" class="bf-step-num">1 / 3</span>
+      <span id="pose-phase-label" class="bf-step-label">PARATE</span>
+    </div>
+    <p id="pose-phase-desc" class="bf-step-desc"></p>
+    <div id="pose-count" class="water-count" aria-live="polite">15</div>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="pose-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="pose-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="pose-end" class="hidden mod-end">
+    <p>Dos minutos de postura expansiva. Tu cerebro procesó la señal de confianza.</p>
+    <div class="end-actions">
+      <button id="pose-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="pose-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function getHummingHTML() {
+    return `
+<div id="mod-humming">
+  <div id="humming-idle">
+    <p class="mod-idle-text">3 rondas de inhalar + emitir "VOO". La vibración activa el nervio vago directamente.</p>
+    <button id="humming-start" class="btn-primary">Empezar</button>
+  </div>
+  <div id="humming-active" class="hidden">
+    <div id="humming-rounds" class="breath-cycles" aria-live="polite"></div>
+    <div class="pose-phase-header" style="margin-top:12px">
+      <span id="humming-label" class="bf-step-label">INHALÁ</span>
+    </div>
+    <p id="humming-desc" class="bf-step-desc"></p>
+    <div id="humming-count" class="water-count" aria-live="polite">4</div>
+    <div class="controls-row" style="margin-top:20px">
+      <button id="humming-pause" class="btn-secondary">⏸ Pausar</button>
+      <button id="humming-reset" class="btn-secondary">Reiniciar</button>
+    </div>
+  </div>
+  <div id="humming-end" class="hidden mod-end">
+    <p>Tres rondas completas. El nervio vago fue estimulado. Notás la diferencia.</p>
+    <div class="end-actions">
+      <button id="humming-repeat" class="btn-primary" style="width:auto;padding:10px 24px">Repetir</button>
+      <button id="humming-done"   class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function getJournalingHTML() {
+    return `
+<div id="mod-journaling">
+  <p class="mod-idle-text" style="text-align:left;margin-bottom:4px">Escribí lo que sea. Sin estructura, sin correcciones. Sacalo afuera.</p>
+  <p class="static-note" style="margin-bottom:16px">Lo que escribís no se guarda. Al cerrar o borrar, desaparece.</p>
+  <textarea
+    id="journaling-textarea"
+    class="journaling-textarea"
+    rows="8"
+    placeholder="Escribí acá lo que tenés en la cabeza…"
+    aria-label="Espacio para escribir libremente"
+  ></textarea>
+  <div class="journaling-controls">
+    <div id="journaling-timer-display" class="journaling-timer">10:00</div>
+    <button id="journaling-timer-start" class="btn-secondary">⏱ Iniciar temporizador (10 min)</button>
+    <button id="journaling-clear"       class="btn-secondary">Borrar todo</button>
+  </div>
+</div>`;
   }
 
   function getStaticHTML(mod) {
