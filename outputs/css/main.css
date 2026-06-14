@@ -143,6 +143,19 @@ body {
 }
 .selector-inner { max-width: var(--max-w); margin: 0 auto; }
 
+.selector-intro { margin-bottom: 36px; }
+.selector-intro-title {
+  font-family: var(--font-serif);
+  font-size: 22px; font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+.selector-intro-sub {
+  font-family: var(--font-sans);
+  font-size: 15px; color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
 .filter-group { margin-bottom: 20px; }
 .filter-label {
   display: block;
