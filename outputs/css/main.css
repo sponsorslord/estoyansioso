@@ -529,6 +529,83 @@ body {
 .footer-credit { font-size: 11px; color: var(--color-text-faint); }
 
 /* ════════════════════════════════════════════════════════════
+   PWA install button + modal
+   ════════════════════════════════════════════════════════════ */
+.pwa-trigger {
+  display: inline-block;
+  margin-top: 20px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.pwa-trigger:hover { border-color: var(--color-accent); color: var(--color-accent-dark); }
+
+.pwa-modal {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(28, 35, 30, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.pwa-modal[hidden] { display: none; }
+
+.pwa-modal-box {
+  background: var(--color-bg);
+  border-radius: 24px;
+  padding: 36px 32px;
+  max-width: 480px; width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.pwa-modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none;
+  font-size: 18px; color: var(--color-text-faint);
+  cursor: pointer; line-height: 1;
+}
+.pwa-modal-close:hover { color: var(--color-text); }
+.pwa-modal-title {
+  font-family: var(--font-serif);
+  font-size: 24px; font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+.pwa-modal-sub {
+  font-size: 14px; color: var(--color-text-muted);
+  line-height: 1.6; margin-bottom: 24px;
+}
+.pwa-native {
+  width: 100%; margin-bottom: 24px;
+}
+.pwa-platform { margin-bottom: 4px; }
+.pwa-platform-title {
+  font-family: var(--font-sans);
+  font-size: 13px; font-weight: 600;
+  color: var(--color-text); margin-bottom: 8px;
+}
+.pwa-list {
+  padding-left: 20px;
+  font-size: 14px; color: var(--color-text-muted);
+  line-height: 1.8;
+}
+.pwa-list strong { color: var(--color-text); }
+.pwa-divider {
+  height: 1px; background: var(--color-border);
+  margin: 20px 0;
+}
+.pwa-note {
+  font-size: 12px; color: var(--color-text-faint);
+  text-align: center; margin-top: 20px; line-height: 1.5;
+}
+
+/* ════════════════════════════════════════════════════════════
    New modules: smile, pose, humming, journaling
    ════════════════════════════════════════════════════════════ */
 .smile-emoji {

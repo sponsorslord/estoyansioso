@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"/>
+  <meta name="theme-color" content="#7A9E7E"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Ansioso"/>
   <link rel="stylesheet" href="css/main.css"/>
   <script defer src="/_vercel/insights/script.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZDLYCLZGW"></script>
@@ -139,8 +145,58 @@
         <strong>Centro de Asistencia al Suicida · 135 · gratis · 24 horas</strong>
       </p>
       <p class="footer-credit">Hecho con intención · Código abierto</p>
+      <button id="pwa-trigger" class="pwa-trigger">📱 Tenerlo como app en mi celu</button>
     </div>
   </footer>
+
+  <!-- Modal PWA -->
+  <div id="pwa-modal" class="pwa-modal" hidden role="dialog" aria-modal="true" aria-label="Instalar como app">
+    <div class="pwa-modal-box">
+      <button id="pwa-close" class="pwa-modal-close" aria-label="Cerrar">✕</button>
+      <h2 class="pwa-modal-title">Instalalo en tu celu</h2>
+      <p class="pwa-modal-sub">Funciona como una app real. Sin App Store, sin Play Store, gratis.</p>
+
+      <!-- Botón nativo Chrome/Android (oculto hasta que el evento se dispare) -->
+      <button id="pwa-native-btn" class="btn-primary pwa-native" hidden>
+        Instalar ahora
+      </button>
+
+      <div class="pwa-steps">
+        <div class="pwa-platform">
+          <p class="pwa-platform-title">📱 iPhone (Safari)</p>
+          <ol class="pwa-list">
+            <li>Abrí este sitio en <strong>Safari</strong> (no Chrome)</li>
+            <li>Tocá el botón de compartir <strong>⎙</strong> abajo en el centro</li>
+            <li>Bajá y tocá <strong>"Agregar a pantalla de inicio"</strong></li>
+            <li>Tocá <strong>"Agregar"</strong> arriba a la derecha</li>
+          </ol>
+        </div>
+
+        <div class="pwa-divider"></div>
+
+        <div class="pwa-platform">
+          <p class="pwa-platform-title">🤖 Android (Chrome)</p>
+          <ol class="pwa-list">
+            <li>Tocá los <strong>tres puntos</strong> ⋮ arriba a la derecha</li>
+            <li>Tocá <strong>"Agregar a pantalla de inicio"</strong> o <strong>"Instalar app"</strong></li>
+            <li>Confirmá tocando <strong>"Instalar"</strong></li>
+          </ol>
+        </div>
+
+        <div class="pwa-divider"></div>
+
+        <div class="pwa-platform">
+          <p class="pwa-platform-title">💻 Computadora (Chrome / Edge)</p>
+          <ol class="pwa-list">
+            <li>Fijate en la barra de dirección — aparece un ícono <strong>⊕</strong> a la derecha</li>
+            <li>Hacé click y después <strong>"Instalar"</strong></li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="pwa-note">Una vez instalado aparece como ícono en tu pantalla y abre sin el navegador.</p>
+    </div>
+  </div>
 
   <script src="js/data/modules.js"></script>
   <script src="js/modules/breathing.js"></script>
@@ -166,5 +222,6 @@
   <script src="js/modules/cogreframing.js"></script>
   <script src="js/selector.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>
